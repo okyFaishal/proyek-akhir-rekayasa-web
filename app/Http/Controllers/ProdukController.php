@@ -7,16 +7,27 @@ use Illuminate\Http\Request;
 
 class ProdukController extends Controller
 {
-    // GET /api/produk/read
+    // read
     public function index()
     {
-        // ikutkan relasi kategori & pelanggan biar kelihatan
         $produk = Produk::with(['kategori', 'pelanggan'])->get();
 
         return response()->json($produk);
     }
 
-    // POST /api/produk/create
+    // read by id
+    public function show($id)
+    {
+        $produk = Produk::with(['kategori', 'pelanggan'])->find($id);
+
+        if (! $produk) {
+            return response()->json(['message' => 'Produk tidak ditemukan'], 404);
+        }
+
+        return response()->json($produk);
+    }
+
+    // create
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -34,7 +45,7 @@ class ProdukController extends Controller
         ], 201);
     }
 
-    // PUT /api/produk/update/{id}
+    // update
     public function update(Request $request, $id)
     {
         $produk = Produk::find($id);
@@ -57,7 +68,7 @@ class ProdukController extends Controller
         ]);
     }
 
-    // DELETE /api/produk/delete/{id}
+    // delete
     public function destroy($id)
     {
         $produk = Produk::find($id);

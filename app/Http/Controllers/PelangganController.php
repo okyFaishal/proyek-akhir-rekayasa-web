@@ -7,13 +7,25 @@ use Illuminate\Http\Request;
 
 class PelangganController extends Controller
 {
-    // GET /api/pelanggan/read
+    // read
     public function index()
     {
         return response()->json(Pelanggan::all());
     }
 
-    // POST /api/pelanggan/create
+    // read by id
+    public function show($id)
+    {
+        $pelanggan = Pelanggan::find($id);
+
+        if (! $pelanggan) {
+            return response()->json(['message' => 'Pelanggan tidak ditemukan'], 404);
+        }
+
+        return response()->json($pelanggan);
+    }
+
+    // create
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -30,7 +42,7 @@ class PelangganController extends Controller
         ], 201);
     }
 
-    // PUT /api/pelanggan/update/{id}
+    // update
     public function update(Request $request, $id)
     {
         $pelanggan = Pelanggan::find($id);
@@ -52,7 +64,7 @@ class PelangganController extends Controller
         ]);
     }
 
-    // DELETE /api/pelanggan/delete/{id}
+    // delete
     public function destroy($id)
     {
         $pelanggan = Pelanggan::find($id);

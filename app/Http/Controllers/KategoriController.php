@@ -7,13 +7,25 @@ use Illuminate\Http\Request;
 
 class KategoriController extends Controller
 {
-    // GET /api/kategori/read
+    // read
     public function index()
     {
         return response()->json(Kategori::all());
     }
 
-    // POST /api/kategori/create
+    // read by id
+    public function show($id)
+    {
+        $kategori = Kategori::find($id);
+
+        if (! $kategori) {
+            return response()->json(['message' => 'Kategori tidak ditemukan'], 404);
+        }
+
+        return response()->json($kategori);
+    }
+
+    // create
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -28,7 +40,7 @@ class KategoriController extends Controller
         ], 201);
     }
 
-    // PUT /api/kategori/update/{id}
+    // update
     public function update(Request $request, $id)
     {
         $kategori = Kategori::find($id);
@@ -48,7 +60,7 @@ class KategoriController extends Controller
         ]);
     }
 
-    // DELETE /api/kategori/delete/{id}
+    // delete
     public function destroy($id)
     {
         $kategori = Kategori::find($id);
